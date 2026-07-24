@@ -16,10 +16,10 @@ import { ProgressBar } from './components/ProgressBar';
  */
 export const CONFIG_ETAPA = {
   // 1. Porcentagem atual / inicial em que a etapa se encontra (Ex: 10)
-  porcentagemInicial: 10,
+  porcentagemInicial: 20,
 
   // 2. Porcentagem em que esta etapa será concluída (Ex: 20)
-  porcentagemFinal: 20,
+  porcentagemFinal: 30,
 
   // 3. Nome ou descrição da etapa exibido no balão e no painel (Ex: 'Extração de dados')
   nomeDaEtapa: 'Bloqueio do GV College - Execução Backup ',
