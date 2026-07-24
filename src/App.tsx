@@ -19,7 +19,7 @@ export const CONFIG_ETAPA = {
   porcentagemInicial: 0,
 
   // 2. Porcentagem em que esta etapa será concluída (Ex: 20)
-  porcentagemFinal: 25,
+  porcentagemFinal: 30,
 
   // 3. Nome ou descrição da etapa exibido no balão e no painel (Ex: 'Extração de dados')
   nomeDaEtapa: 'Restore do Backup ',
