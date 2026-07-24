@@ -1,0 +1,6 @@
+{
+  "name": "Migração GV College para Lyceum",
+  "description": "Tela de loader animada de progresso de migração com personagem caminhando, progresso em tempo real e barra estilizada.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
