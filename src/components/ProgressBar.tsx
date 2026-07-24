@@ -308,7 +308,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
                       : 'text-slate-500'
                   }`}
                 >
-                  {ms.percentage}%
+                 
                 </span>
 
 

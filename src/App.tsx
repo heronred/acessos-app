@@ -19,7 +19,7 @@ export const CONFIG_ETAPA = {
   porcentagemInicial: 0,
 
   // 2. Porcentagem em que esta etapa será concluída (Ex: 20)
-  porcentagemFinal: 14,
+  porcentagemFinal: 12,
 
   // 3. Nome ou descrição da etapa exibido no balão e no painel (Ex: 'Extração de dados')
   nomeDaEtapa: 'Execução Backup ',
@@ -29,7 +29,7 @@ export const CONFIG_ETAPA = {
   animarAvanço: true,
 
   // 5. Velocidade do avanço em milissegundos por atualização (padrão: 200ms)
-  velocidadeMs: 200,
+  velocidadeMs: 20,
 
   // 6. Valor do incremento percentual a cada intervalo (padrão: 0.2%)
   incrementoPercentual: 0.2,
