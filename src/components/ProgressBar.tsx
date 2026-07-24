@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { GVCollegeLogo } from './GVCollegeLogo';
 import { LyceumLogo } from './LyceumLogo';
@@ -60,49 +60,49 @@ const MILESTONES: Milestone[] = [
 {
   percentage: 50,
   label: 'Restore Base Migração',
-  shortLabel: ' ',
+  shortLabel: 'Restore Migração',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 57,
   label: 'Cópia Migração -> Lyceum',
-  shortLabel: ' ',
+  shortLabel: 'Cópia -> Lyceum',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 64,
   label: 'Executa Migração',
-  shortLabel: ' ',
+  shortLabel: 'Executa Migração',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 71,
   label: 'Valida Migração TI',
-  shortLabel: ' ',
+  shortLabel: 'Valida TI',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 79,
   label: 'Libera ambiente CN',
-  shortLabel: ' ',
+  shortLabel: 'Libera CN',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 86,
   label: 'Executa Scripts Pós Migração',
-  shortLabel: ' ',
+  shortLabel: 'Scripts Pós',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 93,
   label: 'Validação Negócio',
-  shortLabel: ' ',
+  shortLabel: 'Validação Negócio',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 {
   percentage: 100,
   label: 'Liberação do ambiente Rosário e São Pedro',
-  shortLabel: ' ',
+  shortLabel: 'Rosário / São Pedro',
   icon: <Flag className="w-3.5 h-3.5" />,
 },
 ];
@@ -114,6 +114,16 @@ interface ProgressBarProps {
   onSelectMilestone?: (pct: number) => void;
 }
 
+// Gera posições fixas para as estrelas (evita "pular" a cada render)
+const STARS = Array.from({ length: 60 }).map((_, i) => ({
+  id: i,
+  top: Math.random() * 100,
+  left: Math.random() * 100,
+  size: Math.random() * 1.6 + 0.6,
+  delay: Math.random() * 4,
+  duration: Math.random() * 3 + 2,
+}));
+
 export const ProgressBar: React.FC<ProgressBarProps> = ({
   percentage,
   isWalking,
@@ -121,14 +131,68 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   onSelectMilestone,
 }) => {
 
+  // Detecta se é "noite" (a partir das 19h até as 6h)
+  const getIsNight = () => {
+    const hour = new Date().getHours();
+    return hour >= 19 || hour < 6;
+  };
+
+  const [isNight, setIsNight] = useState(getIsNight());
+
+  useEffect(() => {
+    // Reavalia a cada minuto, para a transição acontecer sozinha às 19h
+    const interval = setInterval(() => {
+      setIsNight(getIsNight());
+    }, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Mantém o personagem dentro dos limites visuais
   const characterPos = Math.min(Math.max(percentage, 3), 95);
     return (
-    <div className="w-full bg-slate-900/80 border border-slate-800/80 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+    <div
+      className={`w-full border backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-colors duration-1000 ${
+        isNight
+          ? 'bg-slate-950/90 border-slate-800/80'
+          : 'bg-slate-900/80 border-slate-800/80'
+      }`}
+    >
 
-      {/* Background ambient lighting */}
-      <div className="absolute -top-24 -left-24 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Background ambient lighting (dia) */}
+      {!isNight && (
+        <>
+          <div className="absolute -top-24 -left-24 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        </>
+      )}
+
+      {/* Céu noturno com estrelas */}
+      {isNight && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Gradiente de céu noturno */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-indigo-950/40 to-slate-950" />
+
+          {/* Lua */}
+          <div className="absolute top-46 right-10 w-10 h-10 rounded-full bg-slate-200/90 shadow-[0_0_25px_rgba(226,232,240,0.6)]" />
+
+          {/* Estrelas */}
+          {STARS.map((star) => (
+            <div
+              key={star.id}
+              className="absolute rounded-full bg-white animate-pulse"
+              style={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                opacity: 0.8,
+                animationDelay: `${star.delay}s`,
+                animationDuration: `${star.duration}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
 
       {/* Header Logos */}
@@ -181,7 +245,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
 
       {/* Timeline */}
-      <div className="relative pt-20 pb-20 px-6 md:px-10">
+      <div className="relative pt-20 pb-20 px-6 md:px-10 z-10">
 
 
         {/* Character */}
@@ -313,12 +377,12 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
 
 
-                {/* Label ajustado */}
+                {/* Label ajustado - agora sempre visível abaixo de todos os itens */}
                 <span
-                  className={`hidden md:block text-[9px] font-medium mt-1 text-center leading-tight transition-colors ${
+                  className={`block text-[8px] md:text-[9px] font-medium mt-1 text-center leading-tight transition-colors ${
                     ms.percentage >= 95
-                      ? 'max-w-[55px]'
-                      : 'max-w-[65px]'
+                      ? 'max-w-[70px] md:max-w-[75px]'
+                      : 'max-w-[60px] md:max-w-[70px]'
                   }
                   ${
                     isReached
