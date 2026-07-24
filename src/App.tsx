@@ -22,7 +22,7 @@ export const CONFIG_ETAPA = {
   porcentagemFinal: 20,
 
   // 3. Nome ou descrição da etapa exibido no balão e no painel (Ex: 'Extração de dados')
-  nomeDaEtapa: 'Extração de dados',
+  nomeDaEtapa: 'Bloqueio do GV College - Execução Backup ',
 
   // 4. Se 'true', o progresso avança suavemente de porcentagemInicial até porcentagemFinal.
   //    Se 'false', a porcentagem permanece fixa na porcentagemInicial (com o boneco caminhando continuamente no lugar).

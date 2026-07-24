@@ -13,12 +13,12 @@ interface Milestone {
 }
 
 const MILESTONES: Milestone[] = [
-  { percentage: 10, label: 'Início & Mapeamento', shortLabel: 'Início', icon: <Database className="w-3.5 h-3.5" /> },
-  { percentage: 25, label: 'Estrutura de Alunos', shortLabel: 'Alunos', icon: <GraduationCap className="w-3.5 h-3.5" /> },
-  { percentage: 50, label: 'Histórico Acadêmico', shortLabel: 'Históricos', icon: <FileSpreadsheet className="w-3.5 h-3.5" /> },
-  { percentage: 75, label: 'Dados Financeiros', shortLabel: 'Financeiro', icon: <Wallet className="w-3.5 h-3.5" /> },
+  { percentage: 10, label: 'Início & Mapeamento', shortLabel: 'Retirada de acessos', icon: <Database className="w-3.5 h-3.5" /> },
+  { percentage: 25, label: 'Estrutura de Alunos', shortLabel: 'Backup base GV', icon: <GraduationCap className="w-3.5 h-3.5" /> },
+  { percentage: 50, label: 'Histórico Acadêmico', shortLabel: 'Realizar Parada Programada', icon: <FileSpreadsheet className="w-3.5 h-3.5" /> },
+  { percentage: 75, label: 'Dados Financeiros', shortLabel: 'Executar Migração', icon: <Wallet className="w-3.5 h-3.5" /> },
   { percentage: 90, label: 'Validação e Índices', shortLabel: 'Validação', icon: <ShieldCheck className="w-3.5 h-3.5" /> },
-  { percentage: 100, label: 'Concluído no Lyceum', shortLabel: 'Concluído', icon: <Flag className="w-3.5 h-3.5" /> },
+  { percentage: 100, label: 'Concluído no Lyceum', shortLabel: 'Scripts Pós Migração', icon: <Flag className="w-3.5 h-3.5" /> },
 ];
 
 interface ProgressBarProps {
