@@ -16,7 +16,7 @@ import { ProgressBar } from './components/ProgressBar';
  */
 export const CONFIG_ETAPA = {
   // 1. Porcentagem atual / inicial em que a etapa se encontra (Ex: 10)
-  porcentagemInicial: 70,
+  porcentagemInicial: 0,
 
   // 2. Porcentagem em que esta etapa será concluída (Ex: 20)
   porcentagemFinal: 86,
@@ -114,10 +114,10 @@ export default function App() {
           </div>
         </div>
 
-        {/* O COMPONENTE LOADER: boneco anda enquanto avança e deita quando para */}
+        {/* O COMPONENTE LOADER COM BONECO ANDANDO CONTINUAMENTE */}
         <ProgressBar
           percentage={percentage}
-          isWalking={isSimulating} // true enquanto avança, false quando para (deita)
+          isWalking={true} // Boneco mantido em animação contínua mesmo parado
           currentStageName={CONFIG_ETAPA.nomeDaEtapa}
         />
 
