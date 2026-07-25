@@ -162,7 +162,7 @@ export const StageDetails: React.FC<StageDetailsProps> = ({ percentage }) => {
       {/* Terminal Live Console Output */}
       <div className="lg:col-span-5 bg-slate-950 border border-slate-800/90 rounded-2xl p-4 shadow-2xl font-mono text-xs text-slate-300 flex flex-col justify-between relative overflow-hidden">
         {/* Terminal Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 text-slate-400 text-[11px]">
+        <div className="flex items-center justify-between pb-3  border-slate-800/80 text-slate-400 text-[11px]">
           <span className="flex items-center gap-1.5 font-bold text-teal-400">
             <Terminal className="w-3.5 h-3.5" />
             Console de Migração ao Vivo
