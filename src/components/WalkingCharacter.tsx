@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
 
@@ -8,11 +8,39 @@ interface WalkingCharacterProps {
   currentStageName: string;
 }
 
+// Paletas de tom de pele/cabelo disponíveis para sorteio aleatório
+const SKIN_PALETTES = {
+  negro: {
+    headShadow: '#4a2c1a',
+    hairBase: '#1c1917',
+    hairTop: '#0c0a09',
+    face: '#8d5524',
+    mouth: '#5c3a1e',
+  },
+  branco: {
+    headShadow: '#f87171',
+    hairBase: '#fde047',
+    hairTop: '#ca8a04',
+    face: '#fed7aa',
+    mouth: '#9a3412',
+  },
+};
+
+// Sorteia uma paleta aleatoriamente (executado apenas uma vez, na inicialização do estado)
+const getRandomPalette = () => {
+  const keys = Object.keys(SKIN_PALETTES) as (keyof typeof SKIN_PALETTES)[];
+  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  return SKIN_PALETTES[randomKey];
+};
+
 export const WalkingCharacter: React.FC<WalkingCharacterProps> = ({
   percentage,
   currentStageName,
 }) => {
   const isCompleted = percentage >= 100;
+
+  // useState com função de inicialização: o sorteio roda 1x ao montar o componente
+  const [palette] = useState(getRandomPalette);
 
   return (
     <div className="relative flex flex-col items-center">
@@ -141,15 +169,15 @@ export const WalkingCharacter: React.FC<WalkingCharacterProps> = ({
             <rect x="23" y="32" width="7" height="9" rx="1" fill="#38bdf8" stroke="#0284c7" strokeWidth="0.5" />
           </motion.g>
 
-          {/* Head & Hair */}
-          <circle cx="28" cy="13" r="8" fill="#f87171" />
-          <circle cx="28" cy="12" r="7.5" fill="#fde047" />
-          <path d="M 23 10 C 25 7, 32 7, 34 11 C 32 12, 26 12, 23 10 Z" fill="#ca8a04" />
+          {/* Head & Hair - cores sorteadas aleatoriamente (negro ou branco) */}
+          <circle cx="28" cy="13" r="8" fill={palette.headShadow} />
+          <circle cx="28" cy="12" r="7.5" fill={palette.hairBase} />
+          <path d="M 23 10 C 25 7, 32 7, 34 11 C 32 12, 26 12, 23 10 Z" fill={palette.hairTop} />
           {/* Face profile facing Right */}
-          <circle cx="30" cy="13" r="6" fill="#fed7aa" />
+          <circle cx="30" cy="13" r="6" fill={palette.face} />
           <circle cx="32.5" cy="12" r="1" fill="#1e293b" />
           {/* Smile */}
-          <path d="M 31 15 C 32.5 16.5, 34 15, 34 15" stroke="#9a3412" strokeWidth="0.8" strokeLinecap="round" />
+          <path d="M 31 15 C 32.5 16.5, 34 15, 34 15" stroke={palette.mouth} strokeWidth="0.8" strokeLinecap="round" />
 
           {/* Torso / Shirt */}
           <rect x="18" y="20" width="16" height="20" rx="4" fill="url(#char-shirt)" />
