@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, CheckCircle2, Moon } from 'lucide-react';
 
@@ -8,13 +8,187 @@ interface WalkingCharacterProps {
   currentStageName: string;
 }
 
+// Paleta de cores para os 3 companheiros que caminham atrás do boneco principal
+type CompanionPalette = {
+  headShadow: string;
+  hairBase: string;
+  hairTop: string;
+  face: string;
+  mouth: string;
+  shirtFrom: string;
+  shirtTo: string;
+  bottomColor: string; // cor da calça (meninos) ou saia (menina)
+  isGirl?: boolean;
+};
+
+const COMPANIONS: CompanionPalette[] = [
+  // Boneco branco
+  {
+    headShadow: '#f87171',
+    hairBase: '#fde047',
+    hairTop: '#ca8a04',
+    face: '#fed7aa',
+    mouth: '#9a3412',
+    shirtFrom: '#38bdf8',
+    shirtTo: '#0284c7',
+    bottomColor: '#1e293b',
+  },
+  // Boneco negro
+  {
+    headShadow: '#4a2c1a',
+    hairBase: '#1c1917',
+    hairTop: '#0c0a09',
+    face: '#8d5524',
+    mouth: '#5c3a1e',
+    shirtFrom: '#f59e0b',
+    shirtTo: '#b45309',
+    bottomColor: '#1e293b',
+  },
+  // Menina
+  {
+    headShadow: '#8d5524',
+    hairBase: '#451a03',
+    hairTop: '#2a0e01',
+    face: '#e8b384',
+    mouth: '#9a3412',
+    shirtFrom: '#f472b6',
+    shirtTo: '#db2777',
+    bottomColor: '#c026d3',
+    isGirl: true,
+  },
+];
+
+// Renderiza um companheiro pequeno caminhando (versão simplificada do boneco principal)
+const renderCompanion = (p: CompanionPalette, key: string, delay: number) => (
+  <svg
+    key={key}
+    width="34"
+    height="42"
+    viewBox="0 0 34 42"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Mochila */}
+    <rect x="6" y="14" width="5" height="12" rx="2" fill="#d97706" />
+
+    {/* Braço esquerdo */}
+    <motion.g
+      animate={{ rotate: [-22, 18, -22] }}
+      transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+      style={{ transformOrigin: '15px 15px' }}
+    >
+      <rect x="14" y="16" width="3" height="10" rx="1.5" fill={p.shirtTo} />
+    </motion.g>
+
+    {/* Cabeça */}
+    <circle cx="18" cy="8" r="5.2" fill={p.headShadow} />
+    <circle cx="18" cy="7.4" r="4.9" fill={p.hairBase} />
+    {p.isGirl ? (
+      <>
+        {/* Cabelo longo da menina */}
+        <path d="M 13.5 7 C 13 11, 13.5 15, 15 17" stroke={p.hairTop} strokeWidth="2.4" strokeLinecap="round" fill="none" />
+        <path d="M 15 6 C 18 4, 22 5, 22.5 8 C 20.5 9, 16.5 8.5, 15 6 Z" fill={p.hairTop} />
+        {/* Laço */}
+        <circle cx="21.5" cy="5" r="1.3" fill="#ec4899" />
+      </>
+    ) : (
+      <path d="M 15 5.5 C 17 3.5, 21 4, 22 6.5 C 20.5 7.2, 16.5 7, 15 5.5 Z" fill={p.hairTop} />
+    )}
+    <circle cx="19.2" cy="8" r="3.9" fill={p.face} />
+    <circle cx="20.8" cy="7.3" r="0.7" fill="#1e293b" />
+
+    {/* Corpo / roupa */}
+    <rect x="12" y="13" width="10" height="12" rx="3" fill={p.shirtFrom} />
+    <circle cx="14.5" cy="15.5" r="1.2" fill={p.shirtTo} />
+
+    {/* Braço direito */}
+    <motion.g
+      animate={{ rotate: [18, -22, 18] }}
+      transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+      style={{ transformOrigin: '19px 15px' }}
+    >
+      <rect x="19" y="16" width="3" height="10" rx="1.5" fill={p.shirtTo} />
+    </motion.g>
+
+    {p.isGirl ? (
+      <>
+        {/* Saia em formato A-line, com leve balanço de escala (sem deformar o path) */}
+        <motion.g
+          animate={{ scaleX: [1, 1.1, 1] }}
+          transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+          style={{ transformOrigin: '17px 24px' }}
+        >
+          <path d="M 12 24 L 22 24 L 25 33 L 9 33 Z" fill={p.bottomColor} />
+        </motion.g>
+        {/* Pernas por baixo da saia (só aparecem abaixo da barra) */}
+        <motion.g
+          animate={{ rotate: [16, -16, 16] }}
+          transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+          style={{ transformOrigin: '14px 33px' }}
+        >
+          <rect x="12.5" y="33" width="3" height="6" rx="1.5" fill={p.face} />
+        </motion.g>
+        <motion.g
+          animate={{ rotate: [-16, 16, -16] }}
+          transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+          style={{ transformOrigin: '19px 33px' }}
+        >
+          <rect x="18.5" y="33" width="3" height="6" rx="1.5" fill={p.face} />
+        </motion.g>
+      </>
+    ) : (
+      <>
+        {/* Perna esquerda */}
+        <motion.g
+          animate={{ rotate: [22, -22, 22] }}
+          transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+          style={{ transformOrigin: '14px 25px' }}
+        >
+          <rect x="12" y="25" width="3.5" height="12" rx="1.5" fill={p.bottomColor} />
+          <path d="M 11.5 36 L 17 36 L 17 39 L 11 39 Z" fill="#f8fafc" />
+        </motion.g>
+        {/* Perna direita */}
+        <motion.g
+          animate={{ rotate: [-22, 22, -22] }}
+          transition={{ repeat: Infinity, duration: 0.42, ease: 'easeInOut', delay }}
+          style={{ transformOrigin: '19px 25px' }}
+        >
+          <rect x="17" y="25" width="3.5" height="12" rx="1.5" fill="#334155" />
+          <path d="M 16.5 36 L 22 36 L 22 39 L 16 39 Z" fill="#f8fafc" />
+        </motion.g>
+      </>
+    )}
+  </svg>
+);
+
+// A partir das 22h (e até as 6h) é hora de dormir - substitui o antigo gatilho de "pausado"
+const getIsNightSleepHour = () => {
+  const hour = new Date().getHours();
+  return hour >= 22 || hour < 6;
+};
+
 export const WalkingCharacter: React.FC<WalkingCharacterProps> = ({
   isWalking = true,
   percentage,
   currentStageName,
 }) => {
   const isCompleted = percentage >= 100;
-  const isSleeping = !isWalking && !isCompleted;
+
+  // Verifica o horário real e reavalia a cada minuto - dorme só a partir das 22h
+  const [isNightSleepHour, setIsNightSleepHour] = useState(getIsNightSleepHour());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsNightSleepHour(getIsNightSleepHour());
+    }, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Só dorme a partir das 22h; a conclusão da migração tem prioridade sobre o sono
+  const isSleeping = isNightSleepHour && !isCompleted;
+
+  // O grupo (3 companheiros) só aparece caminhando junto, some quando o principal deita
+  const showGroup = !isSleeping;
 
   return (
     <div className="relative flex flex-col items-center">
@@ -123,6 +297,33 @@ export const WalkingCharacter: React.FC<WalkingCharacterProps> = ({
           <Sparkles className="w-5 h-5 animate-bounce text-amber-400" />
           <Sparkles className="w-4 h-4 animate-pulse text-teal-300" />
         </motion.div>
+      )}
+
+      {/* Grupo: 3 companheiros caminhando atrás do boneco principal */}
+      {showGroup && (
+        <>
+          {/* Menina - mais próxima (na frente do grupo de trás) */}
+          <div
+            className="absolute z-10 pointer-events-none"
+            style={{ left: -26, bottom: 2, opacity: 0.95 }}
+          >
+            {renderCompanion(COMPANIONS[2], 'menina', 0.12)}
+          </div>
+          {/* Boneco branco - um pouco mais atrás e mais alto, para não tampar quem vem depois */}
+          <div
+            className="absolute z-[9] pointer-events-none"
+            style={{ left: -54, bottom: 10, opacity: 0.85 }}
+          >
+            {renderCompanion(COMPANIONS[0], 'branco', 0)}
+          </div>
+          {/* Boneco negro - o mais atrás, ainda mais alto, cabeça livre acima da mochila do branco */}
+          <div
+            className="absolute z-[8] pointer-events-none"
+            style={{ left: -80, bottom: 18, opacity: 0.75 }}
+          >
+            {renderCompanion(COMPANIONS[1], 'negro', 0.22)}
+          </div>
+        </>
       )}
 
       {/* Stylized Character SVG - wrapper keeps footprint stable so rotation doesn't shift layout */}
