@@ -111,7 +111,7 @@ interface ProgressBarProps {
   percentage: number;
   isWalking: boolean;
   currentStageName: string;
-  metaPercentual?: number; // Porcentagem que define o "destino" - ao chegar nela, o boneco deita
+  metaPercentual?: number; // % que define o destino (mesa). Padrão 100
   onSelectMilestone?: (pct: number) => void;
 }
 
@@ -198,7 +198,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
 
       {/* Header Logos */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 pb-6  border-slate-800/60 relative z-10">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 pb-6 border-b border-slate-800/60 relative z-10">
 
         {/* GV */}
         <div className="flex flex-col items-center md:items-start group">
@@ -250,7 +250,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       <div className="relative pt-20 pb-20 px-6 md:px-10 z-10">
 
 
-        {/* Character */}
+        {/* Character - anda de acordo com o progresso e vira a cena da mesa ao chegar em metaPercentual */}
         <div
           className="absolute top-1 z-30 transition-all duration-300 ease-out"
           style={{

@@ -114,7 +114,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* O COMPONENTE LOADER: boneco deita ao chegar em porcentagemFinal (o destino definido) */}
+        {/* O boneco anda e, ao chegar em porcentagemFinal, senta na mesa conferindo documentos */}
         <ProgressBar
           percentage={percentage}
           isWalking={isSimulating}
