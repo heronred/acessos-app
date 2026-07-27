@@ -11,7 +11,7 @@ interface WalkingCharacterProps {
 // A partir das 22h (e até as 6h) é hora de dormir - substitui o antigo gatilho de "pausado"
 const getIsNightSleepHour = () => {
   const hour = new Date().getHours();
-  return hour >= 18 || hour < 6;
+  return hour >= 21 || hour < 6;
 };
 
 export const WalkingCharacter: React.FC<WalkingCharacterProps> = ({
