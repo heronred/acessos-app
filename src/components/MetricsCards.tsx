@@ -19,7 +19,7 @@ const RAW_DATA = [
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
   ...row,
-  porcentagem: (row.acessos / row.total) * 100,
+  porcentagem: ((row.acessos / row.total) * 100),
 }));
 
 export const AccessMetricsTable: React.FC = () => {
@@ -94,7 +94,7 @@ export const AccessMetricsTable: React.FC = () => {
           <div className="text-right">
             <span className="text-xs text-slate-400 block font-medium">Porcentagem Geral</span>
             <span className="text-xl font-mono font-black text-sky-400">
-              {pctAlunos.toFixed(4)}%
+              {pctAlunos.toFixed(2)}%
             </span>
           </div>
         </div>
@@ -113,7 +113,7 @@ export const AccessMetricsTable: React.FC = () => {
           <div className="text-right">
             <span className="text-xs text-slate-400 block font-medium">Porcentagem Geral</span>
             <span className="text-xl font-mono font-black text-amber-400">
-              {pctResp.toFixed(4)}%
+              {pctResp.toFixed(2)}%
             </span>
           </div>
         </div>
@@ -170,7 +170,7 @@ export const AccessMetricsTable: React.FC = () => {
               </div>
               <div className="flex justify-between text-[10px] font-mono text-slate-500">
                 <span>0%</span>
-                <span className="text-slate-400 font-semibold">{item.porcentagem.toFixed(4)}%</span>
+                <span className="text-slate-400 font-semibold">{item.porcentagem.toFixed(2)}%</span>
                 <span>100%</span>
               </div>
             </div>
@@ -220,7 +220,7 @@ export const AccessMetricsTable: React.FC = () => {
                   {row.acessos.toLocaleString('pt-BR')}
                 </td>
                 <td className="py-3.5 px-4 text-right font-bold text-emerald-400 font-mono text-sm">
-                  {row.porcentagem.toFixed(6)}%
+                  {row.porcentagem.toFixed(2)}%
                 </td>
                 <td className="py-3.5 px-4">
                   <div className="flex items-center gap-3">
