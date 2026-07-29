@@ -10,11 +10,11 @@ export interface AccessDataRow {
   porcentagem: number;
 }
 
-const RAW_DATA = [
-{ unidade: '2008', tipo: 'ALUNO', total: 711, acessos: 26, porcentagem: 3.66 },
-{ unidade: '2008', tipo: 'RESPONSAVEL', total: 707, acessos: 88, porcentagem: 12.45 },
-{ unidade: '2035', tipo: 'ALUNO', total: 2785, acessos: 49, porcentagem: 1.76 },
-{ unidade: '2035', tipo: 'RESPONSAVEL', total: 2771, acessos: 266, porcentagem: 9.60 },
+export const RAW_DATA = [
+{ unidade: '2008', tipo: 'ALUNO', total: 711, acessos: 28, porcentagem: 3.94, atualizado: '29/07/2026 às 17:03' },
+{ unidade: '2008', tipo: 'RESPONSAVEL', total: 707, acessos: 92, porcentagem: 13.01, atualizado: '29/07/2026 às 17:03' },
+{ unidade: '2035', tipo: 'ALUNO', total: 2785, acessos: 55, porcentagem: 1.97, atualizado: '29/07/2026 às 17:03' },
+{ unidade: '2035', tipo: 'RESPONSAVEL', total: 2771, acessos: 285, porcentagem: 10.29, atualizado: '29/07/2026 às 17:03' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
