@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ProgressBar } from './components/ProgressBar';
-
+import { AccessMetricsTable } from './components/MetricsCards';
 /**
  * =========================================================================================
  * ⚙️ CONFIGURAÇÃO DA ETAPA DE MIGRAÇÃO (ALTERE OS PARÂMETROS E TEXTOS AQUI NO CÓDIGO)
@@ -121,6 +121,10 @@ export default function App() {
           metaPercentual={CONFIG_ETAPA.porcentagemFinal}
           currentStageName={CONFIG_ETAPA.nomeDaEtapa}
         />
+
+
+        {/* TABELA E CARDS DE METRICAS DE ACESSO INCREMENTADAS */}
+        <AccessMetricsTable />
 
       </div>
     </div>
