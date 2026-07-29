@@ -74,7 +74,7 @@ export const WalkingCharacter: React.FC<WalkingCharacterProps> = ({
           {isCompleted ? (
             <span className="text-emerald-300 font-semibold flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              Cheguei ao Lyceum! Migração 100%!
+              Sistema liberado!
             </span>
           ) : (
             <span className="font-semibold text-teal-200">{currentStageName}</span>
