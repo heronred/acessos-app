@@ -114,18 +114,11 @@ export default function App() {
           </div>
         </div>
 
-        {/* O boneco anda e, ao chegar em porcentagemFinal, senta na mesa conferindo documentos */}
-        <ProgressBar
-          percentage={percentage}
-          isWalking={isSimulating}
-          metaPercentual={CONFIG_ETAPA.porcentagemFinal}
-          currentStageName={CONFIG_ETAPA.nomeDaEtapa}
-        />
 
 
         {/* TABELA E CARDS DE METRICAS DE ACESSO INCREMENTADAS */}
 
-
+        <AccessMetricsTable />
       </div>
     </div>
   );

@@ -5,8 +5,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/migracao/',
-
+    //base: '/migracao/',
+    base: '/acessos-app/',
     plugins: [react(), tailwindcss()],
 
     resolve: {
