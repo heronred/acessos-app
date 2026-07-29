@@ -16,13 +16,13 @@ import { AccessMetricsTable } from './components/MetricsCards';
  */
 export const CONFIG_ETAPA = {
   // 1. Porcentagem atual / inicial em que a etapa se encontra (Ex: 10)
-  porcentagemInicial: 80,
+  porcentagemInicial: 100,
 
   // 2. Porcentagem em que esta etapa será concluída (Ex: 20)
   porcentagemFinal: 86,
 
   // 3. Nome ou descrição da etapa exibido no balão e no painel (Ex: 'Extração de dados')
-  nomeDaEtapa: 'Sistema liberado para validação',
+  nomeDaEtapa: 'Sistema liberado',
 
   // 4. Se 'true', o progresso avança suavemente de porcentagemInicial até porcentagemFinal.
   //    Se 'false', a porcentagem permanece fixa na porcentagemInicial (com o boneco caminhando continuamente no lugar).
@@ -124,7 +124,7 @@ export default function App() {
 
 
         {/* TABELA E CARDS DE METRICAS DE ACESSO INCREMENTADAS */}
-        <AccessMetricsTable />
+
 
       </div>
     </div>
