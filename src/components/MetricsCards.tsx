@@ -11,6 +11,7 @@ import {
   Globe,
   Building2,
   Clock,
+  Hash,
 } from 'lucide-react';
 
 export type TipoAcesso = 'ALUNO' | 'RESPONSAVEL' | 'PORTAL CONECTADO';
@@ -25,12 +26,12 @@ export interface AccessDataRow {
 }
 
 export const RAW_DATA = [
-  { unidade: 'São Pedro', tipo: 'ALUNO' as const, total: 711, acessos: 32, porcentagem: 4.50, atualizado: '30/07/2026 às 11:26' },
-  { unidade: 'São Pedro', tipo: 'PORTAL CONECTADO' as const, total: 711, acessos: 128, porcentagem: 18.00, atualizado: '30/07/2026 às 11:26' },
-  { unidade: 'São Pedro', tipo: 'RESPONSAVEL' as const, total: 1247, acessos: 115, porcentagem: 9.22, atualizado: '30/07/2026 às 11:26' },
-  { unidade: 'Rosário', tipo: 'ALUNO' as const, total: 2785, acessos: 84, porcentagem: 3.02, atualizado: '30/07/2026 às 11:26' },
-  { unidade: 'Rosário', tipo: 'PORTAL CONECTADO' as const, total: 2785, acessos: 413, porcentagem: 14.83, atualizado: '30/07/2026 às 11:26' },
-  { unidade: 'Rosário', tipo: 'RESPONSAVEL' as const, total: 5469, acessos: 438, porcentagem: 8.01, atualizado: '30/07/2026 às 11:26' },
+{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 36, porcentagem: 5.06, atualizado: '30/07/2026 às 14:41' },
+{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 135, porcentagem: 18.99, atualizado: '30/07/2026 às 14:41' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 1247, acessos: 120, porcentagem: 9.62, atualizado: '30/07/2026 às 14:41' },
+{ unidade: 'Rosário', tipo: 'ALUNO', total: 2785, acessos: 94, porcentagem: 3.38, atualizado: '30/07/2026 às 14:41' },
+{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2785, acessos: 432, porcentagem: 15.51, atualizado: '30/07/2026 às 14:41' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 5469, acessos: 452, porcentagem: 8.26, atualizado: '30/07/2026 às 14:41' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
@@ -54,7 +55,6 @@ export const AccessMetricsTable: React.FC = () => {
 
   const totalPortal = portalRows.reduce((acc, r) => acc + r.total, 0);
   const acessosPortal = portalRows.reduce((acc, r) => acc + r.acessos, 0);
-  const pctPortal = totalPortal > 0 ? (acessosPortal / totalPortal) * 100 : 0;
 
   const totalResp = respRows.reduce((acc, r) => acc + r.total, 0);
   const acessosResp = respRows.reduce((acc, r) => acc + r.acessos, 0);
@@ -142,69 +142,90 @@ export const AccessMetricsTable: React.FC = () => {
 
         {/* Lista de Cards dos Tipos dentro da Unidade */}
         <div className="space-y-3">
-          {unitRows.map((item, idx) => {
-            const style = getTypeStyle(item.tipo);
-            return (
-              <div
-                key={idx}
-                className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 rounded-2xl p-4 transition-all space-y-3"
-              >
-                <div className="flex items-center justify-between text-xs text-slate-400">
-                  <span
-                    className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full font-mono uppercase tracking-wider flex items-center gap-1.5 ${style.badge}`}
-                  >
-                    {style.icon}
-                    {item.tipo}
-                  </span>
-                  {item.atualizado && (
-                    <span className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-600" />
-                      {item.atualizado}
+          {[...unitRows]
+            .sort((a, b) => (a.tipo === 'PORTAL CONECTADO' ? -1 : b.tipo === 'PORTAL CONECTADO' ? 1 : 0))
+            .map((item, idx) => {
+              const style = getTypeStyle(item.tipo);
+              const isPortal = item.tipo === 'PORTAL CONECTADO';
+
+              return (
+                <div
+                  key={idx}
+                  className={`bg-slate-900/90 border ${
+                    isPortal ? 'border-emerald-500/40 bg-slate-900/95 shadow-md shadow-emerald-500/5' : 'border-slate-800 hover:border-slate-700'
+                  } rounded-2xl p-4 transition-all space-y-3`}
+                >
+                  <div className="flex items-center justify-between text-xs text-slate-400">
+                    <span
+                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full font-mono uppercase tracking-wider flex items-center gap-1.5 ${style.badge}`}
+                    >
+                      {style.icon}
+                      {item.tipo}
                     </span>
+                    {item.atualizado && (
+                      <span className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-slate-600" />
+                        {item.atualizado}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-baseline justify-between pt-1">
+                    <div>
+                      <span className="text-[10px] text-slate-500 block uppercase font-medium">
+                        {isPortal ? 'ACESSOS' : 'Acessos / Total'}
+                      </span>
+                      <span
+                        className={`${
+                          isPortal ? 'text-3xl font-black text-emerald-400' : 'text-xl font-black text-teal-300'
+                        } font-mono`}
+                      >
+                        {item.acessos.toLocaleString('pt-BR')}
+                        {!isPortal && (
+                          <span className="text-xs font-normal text-slate-400 ml-1">
+                            / {item.total.toLocaleString('pt-BR')}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    {!isPortal && (
+                      <div className="text-right">
+                        <span className="text-[10px] text-slate-500 block uppercase font-medium">
+                          Porcentagem
+                        </span>
+                        <span className={`text-lg font-black font-mono ${style.text}`}>
+                          {item.porcentagem.toFixed(2)}%
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Barra de Progresso apenas para ALUNO e RESPONSÁVEL */}
+                  {!isPortal && (
+                    <div className="space-y-1">
+                      <div className="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden relative">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${style.bar}`}
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              Math.max(1, (item.acessos / item.total) * 100)
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-[10px] font-mono text-slate-500">
+                        <span>0%</span>
+                        <span className="text-slate-300 font-semibold">
+                          {item.porcentagem.toFixed(2)}%
+                        </span>
+                        <span>100%</span>
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                <div className="flex items-baseline justify-between pt-1">
-                  <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-medium">
-                      Acessos / Total
-                    </span>
-                    <span className="text-xl font-black font-mono text-teal-300">
-                      {item.acessos.toLocaleString('pt-BR')}
-                      <span className="text-xs font-normal text-slate-400 ml-1">
-                        / {item.total.toLocaleString('pt-BR')}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[10px] text-slate-500 block uppercase font-medium">
-                      Porcentagem
-                    </span>
-                    <span className={`text-lg font-black font-mono ${style.text}`}>
-                      {item.porcentagem.toFixed(2)}%
-                    </span>
-                  </div>
-                </div>
-
-                {/* Barra de Progresso com escala exata */}
-                <div className="space-y-1">
-                  <div className="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden relative">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${style.bar}`}
-                      style={{ width: `${Math.min(100, Math.max(1, item.porcentagem))}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-between text-[10px] font-mono text-slate-500">
-                    <span>0%</span>
-                    <span className="text-slate-300 font-semibold">
-                      {item.porcentagem.toFixed(2)}%
-                    </span>
-                    <span>100%</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </div>
@@ -225,7 +246,7 @@ export const AccessMetricsTable: React.FC = () => {
             Relatório de Acessos por Unidade e Tipo
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Estatísticas exatas de acessos para Alunos, Portal Conectado e Responsáveis
+            Estatísticas de acessos para Alunos, Portal Conectado (absoluto) e Responsáveis
           </p>
         </div>
 
@@ -256,18 +277,23 @@ export const AccessMetricsTable: React.FC = () => {
               Resumo Perfil Aluno
             </div>
             <div className="text-2xl font-black font-mono text-slate-100">
-              {acessosAlunos} <span className="text-xs font-normal text-slate-400">/ {totalAlunos} acessos</span>
+              {acessosAlunos}{' '}
+              <span className="text-xs font-normal text-slate-400">
+                / {totalAlunos} acessos
+              </span>
             </div>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block font-medium">Porcentagem Geral</span>
+            <span className="text-xs text-slate-400 block font-medium">
+              Porcentagem Geral
+            </span>
             <span className="text-xl font-mono font-black text-sky-400">
               {pctAlunos.toFixed(2)}%
             </span>
           </div>
         </div>
 
-        {/* Card Resumo Portal Conectado */}
+        {/* Card Resumo Portal Conectado (Sem % - Número Absoluto) */}
         <div className="bg-slate-950/80 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
@@ -275,14 +301,15 @@ export const AccessMetricsTable: React.FC = () => {
               Resumo Portal Conectado
             </div>
             <div className="text-2xl font-black font-mono text-slate-100">
-              {acessosPortal} <span className="text-xs font-normal text-slate-400">/ {totalPortal} acessos</span>
+              {acessosPortal.toLocaleString('pt-BR')}{' '}
+              <span className="text-xs font-normal text-slate-400">
+               
+              </span>
             </div>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block font-medium">Porcentagem Geral</span>
-            <span className="text-xl font-mono font-black text-emerald-400">
-              {pctPortal.toFixed(2)}%
-            </span>
+
+
           </div>
         </div>
 
@@ -294,11 +321,16 @@ export const AccessMetricsTable: React.FC = () => {
               Resumo Perfil Responsável
             </div>
             <div className="text-2xl font-black font-mono text-slate-100">
-              {acessosResp} <span className="text-xs font-normal text-slate-400">/ {totalResp} acessos</span>
+              {acessosResp}{' '}
+              <span className="text-xs font-normal text-slate-400">
+                / {totalResp} acessos
+              </span>
             </div>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block font-medium">Porcentagem Geral</span>
+            <span className="text-xs text-slate-400 block font-medium">
+              Porcentagem Geral
+            </span>
             <span className="text-xl font-mono font-black text-amber-400">
               {pctResp.toFixed(2)}%
             </span>
@@ -355,20 +387,28 @@ export const AccessMetricsTable: React.FC = () => {
                 <th className="py-3.5 px-4">Tipo</th>
                 <th className="py-3.5 px-4 text-right">Total Usuários</th>
                 <th className="py-3.5 px-4 text-right">Acessos</th>
-                <th className="py-3.5 px-4 text-right">Porcentagem Acessos</th>
-                <th className="py-3.5 px-4 w-1/3">Adesão Real (0% a 100%)</th>
+                <th className="py-3.5 px-4 text-right">Porcentagem / Valor</th>
+                <th className="py-3.5 px-4 w-1/3">Adesão / Progresso</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-slate-200">
               {ACCESS_DATA.map((row, index) => {
                 const style = getTypeStyle(row.tipo);
+                const isPortal = row.tipo === 'PORTAL CONECTADO';
+
                 return (
                   <tr
                     key={index}
                     className="hover:bg-slate-900/50 transition-colors"
                   >
                     <td className="py-3.5 px-4 font-bold text-slate-100 flex items-center gap-2">
-                      <span className={`w-2 h-2 rounded-full ${row.unidade === 'São Pedro' ? 'bg-teal-400' : 'bg-amber-400'}`} />
+                      <span
+                        className={`w-2 h-2 rounded-full ${
+                          row.unidade === 'São Pedro'
+                            ? 'bg-teal-400'
+                            : 'bg-amber-400'
+                        }`}
+                      />
                       Unidade {row.unidade}
                     </td>
                     <td className="py-3.5 px-4">
@@ -385,19 +425,30 @@ export const AccessMetricsTable: React.FC = () => {
                     <td className="py-3.5 px-4 text-right font-bold text-teal-300">
                       {row.acessos.toLocaleString('pt-BR')}
                     </td>
-                    <td className="py-3.5 px-4 text-right font-bold text-emerald-400 font-mono text-sm">
-                      {row.porcentagem.toFixed(2)}%
+                    <td
+                      className={`py-3.5 px-4 text-right font-bold font-mono text-sm ${style.text}`}
+                    >
+                      {isPortal
+                        ? row.acessos.toLocaleString('pt-BR')
+                        : `${row.porcentagem.toFixed(2)}%`}
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-3">
                         <div className="flex-1 bg-slate-800 rounded-full h-2.5 overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${style.bar}`}
-                            style={{ width: `${Math.min(100, Math.max(1, row.porcentagem))}%` }}
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                Math.max(1, (row.acessos / row.total) * 100)
+                              )}%`,
+                            }}
                           />
                         </div>
                         <span className="text-[11px] text-slate-300 font-bold font-mono w-16 text-right">
-                          {row.porcentagem.toFixed(2)}%
+                          {isPortal
+                            ? row.acessos.toLocaleString('pt-BR')
+                            : `${row.porcentagem.toFixed(2)}%`}
                         </span>
                       </div>
                     </td>
