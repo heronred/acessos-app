@@ -127,7 +127,7 @@ export const AccessMetricsTable: React.FC = () => {
                 Unidade {unitTitle}
               </h3>
               <p className="text-xs text-slate-400 font-mono">
-                {totalAcc.toLocaleString('pt-BR')} acessos de {totalBase.toLocaleString('pt-BR')} usuários
+               
               </p>
             </div>
           </div>
@@ -279,7 +279,7 @@ export const AccessMetricsTable: React.FC = () => {
             <div className="text-2xl font-black font-mono text-slate-100">
               {acessosAlunos}{' '}
               <span className="text-xs font-normal text-slate-400">
-                / {totalAlunos} acessos
+            
               </span>
             </div>
           </div>
@@ -323,7 +323,7 @@ export const AccessMetricsTable: React.FC = () => {
             <div className="text-2xl font-black font-mono text-slate-100">
               {acessosResp}{' '}
               <span className="text-xs font-normal text-slate-400">
-                / {totalResp} acessos
+               
               </span>
             </div>
           </div>
