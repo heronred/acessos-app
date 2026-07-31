@@ -26,12 +26,12 @@ export interface AccessDataRow {
 }
 
 export const RAW_DATA = [
-{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 43, porcentagem: 6.05, atualizado: '31/07/2026 às 08:59' },
-{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 149, porcentagem: 20.96, atualizado: '31/07/2026 às 08:59' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 1247, acessos: 134, porcentagem: 10.75, atualizado: '31/07/2026 às 08:59' },
-{ unidade: 'Rosário', tipo: 'ALUNO', total: 2787, acessos: 102, porcentagem: 3.66, atualizado: '31/07/2026 às 08:59' },
-{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2785, acessos: 482, porcentagem: 17.31, atualizado: '31/07/2026 às 08:59' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 5473, acessos: 507, porcentagem: 9.26, atualizado: '31/07/2026 às 08:59' },
+{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 47, porcentagem: 6.61, atualizado: '31/07/2026 às 15:42' },
+{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 156, porcentagem: 21.94, atualizado: '31/07/2026 às 15:42' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 1247, acessos: 140, porcentagem: 11.23, atualizado: '31/07/2026 às 15:42' },
+{ unidade: 'Rosário', tipo: 'ALUNO', total: 2788, acessos: 114, porcentagem: 4.09, atualizado: '31/07/2026 às 15:42' },
+{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2785, acessos: 544, porcentagem: 19.53, atualizado: '31/07/2026 às 15:42' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 5475, acessos: 579, porcentagem: 10.58, atualizado: '31/07/2026 às 15:42' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
@@ -40,9 +40,10 @@ export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
 }));
 
 export const AccessMetricsTable: React.FC = () => {
-  const totalUsuarios = ACCESS_DATA.reduce((acc, row) => acc + row.total, 0);
-  const totalAcessos = ACCESS_DATA.reduce((acc, row) => acc + row.acessos, 0);
-  const mediaPorcentagemGeral = (totalAcessos / totalUsuarios) * 100;
+  const accountRows = ACCESS_DATA.filter((r) => r.tipo !== 'PORTAL CONECTADO');
+  const totalUsuarios = accountRows.reduce((acc, row) => acc + row.total, 0);
+  const totalAcessos = accountRows.reduce((acc, row) => acc + row.acessos, 0);
+  const mediaPorcentagemGeral = totalUsuarios > 0 ? (totalAcessos / totalUsuarios) * 100 : 0;
 
   // Totais por Tipo
   const alunosRows = ACCESS_DATA.filter((r) => r.tipo === 'ALUNO');
@@ -64,12 +65,15 @@ export const AccessMetricsTable: React.FC = () => {
   const saoPedroRows = ACCESS_DATA.filter((r) => r.unidade === 'São Pedro');
   const rosarioRows = ACCESS_DATA.filter((r) => r.unidade === 'Rosário');
 
-  const totalUsuariosSP = saoPedroRows.reduce((acc, r) => acc + r.total, 0);
-  const totalAcessosSP = saoPedroRows.reduce((acc, r) => acc + r.acessos, 0);
+  // Adesão por unidade (Regra de três: Soma dos Acessos / Soma dos Usuários da Base de Alunos e Responsáveis)
+  const saoPedroAdesaoRows = saoPedroRows.filter((r) => r.tipo !== 'PORTAL CONECTADO');
+  const totalUsuariosSP = saoPedroAdesaoRows.reduce((acc, r) => acc + r.total, 0);
+  const totalAcessosSP = saoPedroAdesaoRows.reduce((acc, r) => acc + r.acessos, 0);
   const pctSP = totalUsuariosSP > 0 ? (totalAcessosSP / totalUsuariosSP) * 100 : 0;
 
-  const totalUsuariosRos = rosarioRows.reduce((acc, r) => acc + r.total, 0);
-  const totalAcessosRos = rosarioRows.reduce((acc, r) => acc + r.acessos, 0);
+  const rosarioAdesaoRows = rosarioRows.filter((r) => r.tipo !== 'PORTAL CONECTADO');
+  const totalUsuariosRos = rosarioAdesaoRows.reduce((acc, r) => acc + r.total, 0);
+  const totalAcessosRos = rosarioAdesaoRows.reduce((acc, r) => acc + r.acessos, 0);
   const pctRos = totalUsuariosRos > 0 ? (totalAcessosRos / totalUsuariosRos) * 100 : 0;
 
   const getTypeStyle = (tipo: TipoAcesso) => {
@@ -126,14 +130,16 @@ export const AccessMetricsTable: React.FC = () => {
               <h3 className="text-base font-black text-slate-100">
                 Unidade {unitTitle}
               </h3>
-              <p className="text-xs text-slate-400 font-mono">
-               
+              <p className="text-[11px] text-slate-400 font-mono">
+                {totalAcc.toLocaleString('pt-BR')} acessos de {totalBase.toLocaleString('pt-BR')} usuários
               </p>
             </div>
           </div>
 
           <div className="text-right">
-            <span className="text-[10px] text-slate-400 uppercase font-mono block">Adesão Unidade</span>
+            <span className="text-[10px] text-slate-400 uppercase font-mono block">
+              Adesão Unidade
+            </span>
             <span className={`text-lg font-black font-mono ${accentBadge}`}>
               {overallPct.toFixed(2)}%
             </span>
@@ -252,17 +258,14 @@ export const AccessMetricsTable: React.FC = () => {
 
         {/* Total Summary Badges */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 font-mono text-xs font-semibold flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5" />
-            Total Base: <strong>{totalUsuarios.toLocaleString('pt-BR')}</strong>
-          </span>
+
           <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs font-semibold flex items-center gap-1.5">
             <UserCheck className="w-3.5 h-3.5" />
-            Total Acessos: <strong>{totalAcessos.toLocaleString('pt-BR')}</strong>
+            Total Acessos APP: <strong>{totalAcessos.toLocaleString('pt-BR')}</strong>
           </span>
           <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-semibold flex items-center gap-1.5">
             <Percent className="w-3.5 h-3.5" />
-            Média Geral: <strong>{mediaPorcentagemGeral.toFixed(2)}%</strong>
+            Média Geral APP: <strong>{mediaPorcentagemGeral.toFixed(2)}%</strong>
           </span>
         </div>
       </div>
@@ -278,18 +281,11 @@ export const AccessMetricsTable: React.FC = () => {
             </div>
             <div className="text-2xl font-black font-mono text-slate-100">
               {acessosAlunos}{' '}
-              <span className="text-xs font-normal text-slate-400">
-            
-              </span>
+
             </div>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block font-medium">
-              Porcentagem Geral
-            </span>
-            <span className="text-xl font-mono font-black text-sky-400">
-              {pctAlunos.toFixed(2)}%
-            </span>
+
           </div>
         </div>
 
@@ -302,14 +298,13 @@ export const AccessMetricsTable: React.FC = () => {
             </div>
             <div className="text-2xl font-black font-mono text-slate-100">
               {acessosPortal.toLocaleString('pt-BR')}{' '}
-              <span className="text-xs font-normal text-slate-400">
-               
-              </span>
+
             </div>
           </div>
           <div className="text-right">
 
-
+            <span className="text-xl font-mono font-black text-emerald-400 flex items-center justify-end gap-1">
+            </span>
           </div>
         </div>
 
@@ -322,18 +317,11 @@ export const AccessMetricsTable: React.FC = () => {
             </div>
             <div className="text-2xl font-black font-mono text-slate-100">
               {acessosResp}{' '}
-              <span className="text-xs font-normal text-slate-400">
-               
-              </span>
+
             </div>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block font-medium">
-              Porcentagem Geral
-            </span>
-            <span className="text-xl font-mono font-black text-amber-400">
-              {pctResp.toFixed(2)}%
-            </span>
+
           </div>
         </div>
       </div>
