@@ -26,12 +26,12 @@ export interface AccessDataRow {
 }
 
 export const RAW_DATA = [
-{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 36, porcentagem: 5.06, atualizado: '30/07/2026 às 14:41' },
-{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 135, porcentagem: 18.99, atualizado: '30/07/2026 às 14:41' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 1247, acessos: 120, porcentagem: 9.62, atualizado: '30/07/2026 às 14:41' },
-{ unidade: 'Rosário', tipo: 'ALUNO', total: 2785, acessos: 94, porcentagem: 3.38, atualizado: '30/07/2026 às 14:41' },
-{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2785, acessos: 432, porcentagem: 15.51, atualizado: '30/07/2026 às 14:41' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 5469, acessos: 452, porcentagem: 8.26, atualizado: '30/07/2026 às 14:41' },
+{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 43, porcentagem: 6.05, atualizado: '31/07/2026 às 08:59' },
+{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 149, porcentagem: 20.96, atualizado: '31/07/2026 às 08:59' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 1247, acessos: 134, porcentagem: 10.75, atualizado: '31/07/2026 às 08:59' },
+{ unidade: 'Rosário', tipo: 'ALUNO', total: 2787, acessos: 102, porcentagem: 3.66, atualizado: '31/07/2026 às 08:59' },
+{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2785, acessos: 482, porcentagem: 17.31, atualizado: '31/07/2026 às 08:59' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 5473, acessos: 507, porcentagem: 9.26, atualizado: '31/07/2026 às 08:59' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
