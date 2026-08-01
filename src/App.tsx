@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ProgressBar } from './components/ProgressBar';
 import { AccessMetricsTable } from './components/MetricsCards';
 import { RAW_DATA } from './components/MetricsCards';
-
+import maristaLogo from './assets/marista-conectado-logo.png';
 /**
  * =========================================================================================
  * ⚙️ CONFIGURAÇÃO DA ETAPA DE MIGRAÇÃO (ALTERE OS PARÂMETROS E TEXTOS AQUI NO CÓDIGO)
@@ -82,14 +82,7 @@ export default function App() {
         
         {/* Cabeçalho do Loader */}
         <div className="text-center space-y-2">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-teal-500/30 shadow-lg text-teal-300 text-xs font-semibold uppercase tracking-widest"
-          >
-            <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping" />
-            DADOS DE ACESSO AO APP 
-          </motion.div>
+
 
           <motion.h1
             initial={{ opacity: 0, y: -10 }}
@@ -97,7 +90,8 @@ export default function App() {
             transition={{ delay: 0.1 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-100 tracking-tight"
           >
-            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGOj7aCK-Cs4rsp-1MfvtNkFr_KMqlUIIB03JUMzpSQw&s=10' alt="Logo" width="220"  style={{ margin: 'auto' }} /></motion.h1>
+<img src={maristaLogo} alt="Marista Conectado" width="220" style={{ margin: 'auto' }} />            
+            </motion.h1>
         </div>
 
         {/* Mostrador de Porcentagem & Etapa Atual */}
