@@ -63,6 +63,20 @@ export default function App() {
     return () => clearInterval(interval);
   }, [isSimulating, percentage]);
 
+
+
+// Unidade vinda da URL
+const unidade = (() => {
+  const params = new URLSearchParams(window.location.search);
+  const valor = params.get("unidade")?.toLowerCase();
+
+  if (valor === "sao-pedro") return "sao-pedro";
+  if (valor === "rosario") return "rosario";
+
+  return null;
+})();
+
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-teal-500 selection:text-slate-950 relative overflow-hidden flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
       {/* Luzes de ambiente ao fundo */}
@@ -90,7 +104,7 @@ export default function App() {
             transition={{ delay: 0.1 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-100 tracking-tight"
           >
-<img src={maristaLogo} alt="Marista Conectado" width="220" style={{ margin: 'auto' }} />            
+            <img src={maristaLogo} alt="Marista Conectado" width="220" style={{ margin: 'auto' }} />            
             </motion.h1>
         </div>
 
@@ -112,7 +126,7 @@ export default function App() {
 
         {/* TABELA E CARDS DE METRICAS DE ACESSO INCREMENTADAS */}
 
-        <AccessMetricsTable />
+<AccessMetricsTable unidade={unidade} />
       </div>
     </div>
   );

@@ -90,15 +90,36 @@ const ProgressBarShimmer: React.FC<{ pct: number; gradientClass: string }> = ({ 
   </div>
 );
 
-export const AccessMetricsTable: React.FC = () => {
-  const accountRows = ACCESS_DATA.filter((r) => r.tipo !== 'PORTAL CONECTADO');
+interface AccessMetricsTableProps {
+  unidade?: string | null;
+}
+
+export const AccessMetricsTable: React.FC<AccessMetricsTableProps> = ({
+  unidade,
+}) => {
+
+    const dadosFiltrados =
+    unidade === 'sao-pedro'
+      ? ACCESS_DATA.filter((r) => r.unidade === 'São Pedro')
+      : unidade === 'rosario'
+      ? ACCESS_DATA.filter((r) => r.unidade === 'Rosário')
+      : ACCESS_DATA;
+
+const accountRows = dadosFiltrados.filter(
+  (r) => r.tipo !== 'PORTAL CONECTADO'
+);
   const totalUsuarios = accountRows.reduce((acc, row) => acc + row.total, 0);
   const totalAcessos = accountRows.reduce((acc, row) => acc + row.acessos, 0);
   const mediaPorcentagemGeral = totalUsuarios > 0 ? (totalAcessos / totalUsuarios) * 100 : 0;
 
-  const alunosRows = ACCESS_DATA.filter((r) => r.tipo === 'ALUNO');
-  const portalRows = ACCESS_DATA.filter((r) => r.tipo === 'PORTAL CONECTADO');
-  const respRows = ACCESS_DATA.filter((r) => r.tipo === 'RESPONSAVEL');
+  
+  const alunosRows = dadosFiltrados.filter((r) => r.tipo === 'ALUNO');
+  const portalRows = dadosFiltrados.filter(
+  (r) => r.tipo === 'PORTAL CONECTADO'
+  );
+  const respRows = dadosFiltrados.filter(
+  (r) => r.tipo === 'RESPONSAVEL'
+  );
 
   const acessosAlunos = alunosRows.reduce((acc, r) => acc + r.acessos, 0);
   const acessosPortal = portalRows.reduce((acc, r) => acc + r.acessos, 0);
@@ -117,7 +138,9 @@ export const AccessMetricsTable: React.FC = () => {
   const totalAcessosRos = rosarioAdesaoRows.reduce((acc, r) => acc + r.acessos, 0);
   const pctRos = totalUsuariosRos > 0 ? (totalAcessosRos / totalUsuariosRos) * 100 : 0;
 
-  const ultimaAtualizacao = ACCESS_DATA.find((r) => r.atualizado)?.atualizado;
+  const ultimaAtualizacao = dadosFiltrados.find(
+  (r) => r.atualizado
+)?.atualizado;
 
   const renderUnitColumn = (
     unitTitle: string,
@@ -257,7 +280,7 @@ export const AccessMetricsTable: React.FC = () => {
       </div>
     </motion.div>
   );
-
+const exibirTodasUnidades = !unidade;
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -370,31 +393,67 @@ export const AccessMetricsTable: React.FC = () => {
           Acompanhamento por Unidade
         </h3>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {renderUnitColumn(
-            'São Pedro',
-            saoPedroRows,
-            totalUsuariosSP,
-            totalAcessosSP,
-            pctSP,
-            'border-teal-500/30',
-            'bg-teal-500/10',
-            'text-teal-300',
-            0.15
-          )}
+<div
+  className={`grid gap-6 ${
+    exibirTodasUnidades
+      ? 'grid-cols-1 lg:grid-cols-2'
+      : 'grid-cols-1'
+  }`}
+>
+  {exibirTodasUnidades && (
+    <>
+      {renderUnitColumn(
+        'São Pedro',
+        saoPedroRows,
+        totalUsuariosSP,
+        totalAcessosSP,
+        pctSP,
+        'border-teal-500/30',
+        'bg-teal-500/10',
+        'text-teal-300',
+        0.15
+      )}
 
-          {renderUnitColumn(
-            'Rosário',
-            rosarioRows,
-            totalUsuariosRos,
-            totalAcessosRos,
-            pctRos,
-            'border-amber-500/30',
-            'bg-amber-500/10',
-            'text-amber-300',
-            0.25
-          )}
-        </div>
+      {renderUnitColumn(
+        'Rosário',
+        rosarioRows,
+        totalUsuariosRos,
+        totalAcessosRos,
+        pctRos,
+        'border-amber-500/30',
+        'bg-amber-500/10',
+        'text-amber-300',
+        0.25
+      )}
+    </>
+  )}
+
+  {unidade === 'sao-pedro' &&
+    renderUnitColumn(
+      'São Pedro',
+      saoPedroRows,
+      totalUsuariosSP,
+      totalAcessosSP,
+      pctSP,
+      'border-teal-500/30',
+      'bg-teal-500/10',
+      'text-teal-300',
+      0.15
+    )}
+
+  {unidade === 'rosario' &&
+    renderUnitColumn(
+      'Rosário',
+      rosarioRows,
+      totalUsuariosRos,
+      totalAcessosRos,
+      pctRos,
+      'border-amber-500/30',
+      'bg-amber-500/10',
+      'text-amber-300',
+      0.25
+    )}
+</div>
       </div>
 
       {/* Styled Data Table Completa Consolidada */}
