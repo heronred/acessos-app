@@ -30,12 +30,14 @@ export interface AccessDataRow {
  * =========================================================================================
  */
 export const RAW_DATA = [
-{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 87, porcentagem: 12.24, atualizado: '04/08/2026 às 11:51' },
-{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 245, porcentagem: 34.46, atualizado: '04/08/2026 às 11:51' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 1262, acessos: 228, porcentagem: 18.07, atualizado: '04/08/2026 às 11:51' },
-{ unidade: 'Rosário', tipo: 'ALUNO', total: 2789, acessos: 441, porcentagem: 15.81, atualizado: '04/08/2026 às 11:51' },
-{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2789, acessos: 1266, porcentagem: 45.39, atualizado: '04/08/2026 às 11:51' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 5476, acessos: 1365, porcentagem: 24.93, atualizado: '04/08/2026 às 11:51' },
+{ unidade: 'São Pedro', tipo: 'ALUNO', total: 711, acessos: 89, porcentagem: 12.52, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 261, porcentagem: 36.71, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 548, acessos: 13, porcentagem: 2.37, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL_FINAN', total: 714, acessos: 235, porcentagem: 32.91, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'Rosário', tipo: 'ALUNO', total: 2789, acessos: 500, porcentagem: 17.93, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2789, acessos: 1343, porcentagem: 48.15, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 2663, acessos: 253, porcentagem: 9.50, atualizado: '04/08/2026 às 14:22' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL_FINAN', total: 2812, acessos: 1166, porcentagem: 41.47, atualizado: '04/08/2026 às 14:22' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
@@ -63,16 +65,30 @@ const getTypeStyle = (tipo: TipoAcesso) => {
         text: 'text-emerald-400',
         icon: <Globe className="w-3.5 h-3.5" />,
       };
-    case 'RESPONSAVEL':
-    default:
-      return {
+
+case 'RESPONSAVEL_FINAN':
+  return {
         badge: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
         badgeTable: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
         bar: 'from-amber-500 via-amber-400 to-yellow-300',
         glow: 'shadow-amber-500/20',
         text: 'text-amber-400',
+    icon: <ShieldCheck className="w-3.5 h-3.5" />,
+  };
+    case 'RESPONSAVEL':
+    default:
+      return {
+
+badge: 'bg-zinc-500/10 text-zinc-300 border-zinc-500/30',
+badgeTable: 'bg-zinc-500/10 text-zinc-300 border-zinc-500/20',
+bar: 'from-zinc-500 via-slate-400 to-gray-300',
+glow: 'shadow-zinc-500/20',
+text: 'text-zinc-300',
+
         icon: <ShieldCheck className="w-3.5 h-3.5" />,
       };
+
+      
   }
 };
 
@@ -118,7 +134,7 @@ const accountRows = dadosFiltrados.filter(
   (r) => r.tipo === 'PORTAL CONECTADO'
   );
   const respRows = dadosFiltrados.filter(
-  (r) => r.tipo === 'RESPONSAVEL'
+  (r) => r.tipo === 'RESPONSAVEL_FINAN'
   );
 
   const acessosAlunos = alunosRows.reduce((acc, r) => acc + r.acessos, 0);
