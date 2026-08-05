@@ -30,14 +30,14 @@ export interface AccessDataRow {
  * =========================================================================================
  */
 export const RAW_DATA = [
-{ unidade: 'São Pedro', tipo: 'ALUNO', total: 712, acessos: 89, porcentagem: 12.50, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 711, acessos: 263, porcentagem: 36.99, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 548, acessos: 13, porcentagem: 2.37, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL_FINAN', total: 715, acessos: 237, porcentagem: 33.15, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'Rosário', tipo: 'ALUNO', total: 2789, acessos: 533, porcentagem: 19.11, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2789, acessos: 1386, porcentagem: 49.70, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 2663, acessos: 262, porcentagem: 9.84, atualizado: '04/08/2026 às 17:05' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL_FINAN', total: 2812, acessos: 1192, porcentagem: 42.39, atualizado: '04/08/2026 às 17:05' },
+{ unidade: 'São Pedro', tipo: 'ALUNO', total: 712, acessos: 95, porcentagem: 13.34, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 712, acessos: 289, porcentagem: 40.59, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 551, acessos: 17, porcentagem: 3.09, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL_FINAN', total: 715, acessos: 263, porcentagem: 36.78, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'Rosário', tipo: 'ALUNO', total: 2789, acessos: 647, porcentagem: 23.20, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2789, acessos: 1632, porcentagem: 58.52, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 2664, acessos: 333, porcentagem: 12.50, atualizado: '05/08/2026 às 09:37' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL_FINAN', total: 2812, acessos: 1396, porcentagem: 49.64, atualizado: '05/08/2026 às 09:37' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
