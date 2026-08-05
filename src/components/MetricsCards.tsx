@@ -30,14 +30,18 @@ export interface AccessDataRow {
  * =========================================================================================
  */
 export const RAW_DATA = [
-{ unidade: 'São Pedro', tipo: 'ALUNO', total: 407, acessos: 81, porcentagem: 19.90, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 712, acessos: 312, porcentagem: 43.82, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 564, acessos: 22, porcentagem: 3.90, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'São Pedro', tipo: 'RESPONSAVEL_FINAN', total: 716, acessos: 275, porcentagem: 38.41, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'Rosário', tipo: 'ALUNO', total: 1818, acessos: 572, porcentagem: 31.46, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2789, acessos: 1691, porcentagem: 60.63, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 2664, acessos: 351, porcentagem: 13.18, atualizado: '05/08/2026 às 14:01' },
-{ unidade: 'Rosário', tipo: 'RESPONSAVEL_FINAN', total: 2812, acessos: 1438, porcentagem: 51.14, atualizado: '05/08/2026 às 14:01' },
+{ unidade: 'São Pedro', tipo: 'ALUNO', total: 407, acessos: 82, porcentagem: 20.15, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'São Pedro', tipo: 'PORTAL CONECTADO', total: 712, acessos: 313, porcentagem: 43.96, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL', total: 564, acessos: 22, porcentagem: 3.90, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'São Pedro', tipo: 'RESPONSAVEL_FINAN', total: 716, acessos: 276, porcentagem: 38.55, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'Rosário', tipo: 'ALUNO', total: 1818, acessos: 581, porcentagem: 31.96, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'Rosário', tipo: 'PORTAL CONECTADO', total: 2789, acessos: 1701, porcentagem: 60.99, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL', total: 2664, acessos: 352, porcentagem: 13.21, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'Rosário', tipo: 'RESPONSAVEL_FINAN', total: 2812, acessos: 1444, porcentagem: 51.35, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'João Paulo II', tipo: 'ALUNO', total: 746, acessos: 369, porcentagem: 49.46, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'João Paulo II', tipo: 'PORTAL CONECTADO', total: 1564, acessos: 1328, porcentagem: 84.91, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'João Paulo II', tipo: 'RESPONSAVEL', total: 1500, acessos: 417, porcentagem: 27.80, atualizado: '05/08/2026 às 15:01' },
+{ unidade: 'João Paulo II', tipo: 'RESPONSAVEL_FINAN', total: 1603, acessos: 1436, porcentagem: 89.58, atualizado: '05/08/2026 às 15:01' },
 ];
 
 export const ACCESS_DATA: AccessDataRow[] = RAW_DATA.map((row) => ({
@@ -119,7 +123,9 @@ export const AccessMetricsTable: React.FC<AccessMetricsTableProps> = ({
       ? ACCESS_DATA.filter((r) => r.unidade === 'São Pedro')
       : unidade === 'rosario'
       ? ACCESS_DATA.filter((r) => r.unidade === 'Rosário')
-      : ACCESS_DATA;
+      : unidade === 'jp-ii'
+      ? ACCESS_DATA.filter((r) => r.unidade === 'João Paulo II')
+      : ACCESS_DATA.filter((r) => r.unidade !== 'João Paulo II');
 
 const accountRows = dadosFiltrados.filter(
   (r) => r.tipo !== 'PORTAL CONECTADO'
@@ -143,6 +149,7 @@ const accountRows = dadosFiltrados.filter(
 
   const saoPedroRows = ACCESS_DATA.filter((r) => r.unidade === 'São Pedro');
   const rosarioRows = ACCESS_DATA.filter((r) => r.unidade === 'Rosário');
+  const joaoPauloRows = ACCESS_DATA.filter((r) => r.unidade === 'João Paulo II');
 
   const saoPedroAdesaoRows = saoPedroRows.filter((r) => r.tipo !== 'PORTAL CONECTADO');
   const totalUsuariosSP = saoPedroAdesaoRows.reduce((acc, r) => acc + r.total, 0);
@@ -153,6 +160,11 @@ const accountRows = dadosFiltrados.filter(
   const totalUsuariosRos = rosarioAdesaoRows.reduce((acc, r) => acc + r.total, 0);
   const totalAcessosRos = rosarioAdesaoRows.reduce((acc, r) => acc + r.acessos, 0);
   const pctRos = totalUsuariosRos > 0 ? (totalAcessosRos / totalUsuariosRos) * 100 : 0;
+
+  const joaoPauloAdesaoRows = joaoPauloRows.filter((r) => r.tipo !== 'PORTAL CONECTADO');
+  const totalUsuariosJP = joaoPauloAdesaoRows.reduce((acc, r) => acc + r.total, 0);
+  const totalAcessosJP = joaoPauloAdesaoRows.reduce((acc, r) => acc + r.acessos, 0);
+  const pctJP = totalUsuariosJP > 0 ? (totalAcessosJP / totalUsuariosJP) * 100 : 0;
 
   const ultimaAtualizacao = dadosFiltrados.find(
   (r) => r.atualizado
@@ -468,6 +480,19 @@ const exibirTodasUnidades = !unidade;
       'bg-amber-500/10',
       'text-amber-300',
       0.25
+    )}
+
+  {unidade === 'jp-ii' &&
+    renderUnitColumn(
+      'João Paulo II',
+      joaoPauloRows,
+      totalUsuariosJP,
+      totalAcessosJP,
+      pctJP,
+      'border-violet-500/30',
+      'bg-violet-500/10',
+      'text-violet-300',
+      0.15
     )}
 </div>
       </div>

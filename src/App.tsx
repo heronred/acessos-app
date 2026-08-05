@@ -72,6 +72,7 @@ const unidade = (() => {
 
   if (valor === "sao-pedro") return "sao-pedro";
   if (valor === "rosario") return "rosario";
+    if (valor === "jp-ii") return "jp-ii";
 
   return null;
 })();
